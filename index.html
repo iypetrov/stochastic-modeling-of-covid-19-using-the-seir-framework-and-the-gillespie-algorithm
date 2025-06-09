@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Stochastic Modeling of COVID-19 Using the SEIR Framework and the Gillespie Algorithm</title>
+       	<link rel="icon" type="image/x-icon" href="public/small-logo.png"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/css/reveal.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/css/theme/white.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/xcode.min.css" />
+    </head>
+    <style>
+        mark {
+            background-color: #ececec; 
+            color: #c6241d;              
+            border-radius: 10px;     
+        }
+    </style>
+    <body>
+        <div class="reveal">
+            <div class="slides">
+                <section>
+                    <h2>Stochastic Modeling of COVID-19 Using the SEIR Framework and the Gillespie Algorithm</h2>
+                    <p>Ilia Petrov, 62520</p>
+                </section>
+                <section>
+                    <section>
+                        <h2>SEIR моделът</h2>
+                    </section>
+                    <section>
+                        <p>SEIR е класически епидемиологичен модел, който описва как се разпространява инфекциозно заболяване в една популация.</p>
+                    </section>
+                    <section>
+                        <p>Популацията се разделя на четири групи:</p>
+                        <div style="width: 100%;">
+                            <ul>
+                                <li>S(Susceptible) - податливи на зараза</li>
+                                <li>E(Exposed) - заразени, но още не инфекциозни (инкубационен период)</li>
+                                <li>I(Infectious) - активно заразяващи други</li>
+                                <li>R(Recovered) - оздравели или с имунитет</li>
+                            </ul>
+                        </div>
+                    </section>
+                    <section>
+                        <p>Промените между тези състояния се описват чрез диференциални уравнения с параметри:</p>
+                        <div style="width: 100%;">
+                            <ul>
+                                <li>β – скорост на предаване на инфекцията</li>
+                                <li>σ – скорост на преминаване от E към I (обратното на инкубационния период)</li>
+                                <li>γ – скорост на възстановяване от инфекцията</li>
+                            </ul>
+                        </div>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h2>Gillespie Algorithm</h2>
+                    </section>
+                    <section>
+                        <p>Gillespie алгоритъмът е метод за точна симулация на системи, в които събития се случват на случаен момент от време.</p>
+                    </section>
+                    <section>
+                        <p>Gillespie алгоритъмът е стохастичната версия на SEIR модела, в която преходите между състояния се случват на случаен момент, със случайни амплитуди, но със същата логика на взаимодействие.</p>
+                    </section>
+                </section>
+            </div>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/js/reveal.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+        <script>
+            Reveal.initialize({
+                controls: true,
+                progress: true,
+                slideNumber: false,
+                history: true,
+                center: true,
+                transition: 'slide'
+            });
+            hljs.highlightAll();
+        </script>
+    </body>
+</html>
