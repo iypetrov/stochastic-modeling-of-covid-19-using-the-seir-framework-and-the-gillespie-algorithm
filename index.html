@@ -4,7 +4,6 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Stochastic Modeling of COVID-19 Using the SEIR Framework and the Gillespie Algorithm</title>
-       	<link rel="icon" type="image/x-icon" href="public/small-logo.png"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/css/reveal.min.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/css/theme/white.min.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/xcode.min.css" />
@@ -62,6 +61,119 @@
                     <section>
                         <p>Gillespie алгоритъмът е стохастичната версия на SEIR модела, в която преходите между състояния се случват на случаен момент, със случайни амплитуди, но със същата логика на взаимодействие.</p>
                     </section>
+
+                    <section>
+                        <p>Нека имаме <i>M</i> възможни събития (напр. заразяване, преминаване от E към I, възстановяване). За текущото състояние <i>x</i>:</p>
+                    </section>
+                    <section>
+                        <strong>Изчисляваме всички пропенсити (propensity functions) <i>a<sub>j</sub>(x)</i></strong>, които показват колко често се случва всяко събитие:
+                        <ul>
+                            <li>Например:</li>
+                            <ul>
+                                <li><i>a<sub>1</sub> = β · (S·I)/N</i> — вероятност за заразяване</li>
+                                <li><i>a<sub>2</sub> = σ · E</i> — вероятност за преминаване E → I</li>
+                                <li><i>a<sub>3</sub> = γ · I</i> — вероятност за възстановяване</li>
+                            </ul>
+                        </ul>
+                    </section>
+                    
+                    <section>
+                        <strong>Сумираме ги:</strong> <i>a<sub>0</sub> = a<sub>1</sub> + a<sub>2</sub> + a<sub>3</sub></i>
+                    </section>
+                    
+                    <section>
+                        <strong>Избираме време до следващото събитие (τ):</strong>
+                        <ul>
+                            <li>τ е случайна величина от експоненциално разпределение с параметър <i>a<sub>0</sub></i></li>
+                            <li>Генерираме случайно число <i>r<sub>1</sub> ∼ U(0, 1)</i> и изчисляваме:</li>
+                            <li><i>τ = -ln(r<sub>1</sub>) / a<sub>0</sub></i></li>
+                        </ul>
+                    </section>
+                    
+                    <section>
+                        <strong>Избираме кое събитие ще се случи:</strong>
+                        <ul>
+                            <li>Генерираме второ случайно число <i>r<sub>2</sub> ∼ U(0, 1)</i></li>
+                            <li>Избираме най-малкото <i>j</i>, за което:</li>
+                            <li>
+                                <i>
+                                    ∑<sub>k=1</sub><sup>j−1</sup> a<sub>k</sub> &lt; r<sub>2</sub>·a<sub>0</sub> ≤ ∑<sub>k=1</sub><sup>j</sup> a<sub>k</sub>
+                                </i>
+                            </li>
+                        </ul>
+                    </section>
+                    
+                    <section>
+                        <strong>Обновяваме състоянието <i>x</i></strong> според избраното събитие и повтаряме стъпките.
+                    </section>
+                </section>
+                <section>
+                    <strong>Gillespie алгоритъмът симулира SEIR модела, но стохастично</strong>
+                    <table border="1" cellpadding="8" cellspacing="0">
+                      <thead>
+                        <tr>
+                          <th>SEIR преход</th>
+                          <th>Gillespie реакция</th>
+                          <th>Скорост (propensity)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>S + I → E + I</td>
+                          <td>заразяване</td>
+                          <td><i>a</i><sub>1</sub> = β · (S·I)/N</td>
+                        </tr>
+                        <tr>
+                          <td>E → I</td>
+                          <td>инкубация</td>
+                          <td><i>a</i><sub>2</sub> = σ · E</td>
+                        </tr>
+                        <tr>
+                          <td>I → R</td>
+                          <td>възстановяване</td>
+                          <td><i>a</i><sub>3</sub> = γ · I</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                </section>
+                <section>
+                    <section>
+                        <h3>Време за резултата от изследването</h3> 
+                    </section>
+                    <section>
+                        <h3>Симулацията е писана на Python и сравнява Gillespie и детерминистичния SEIR</h3> 
+                    </section>
+                     <section>
+                        <h3>параметрите на симулацията</h3>
+                        <pre><code class="language-python">
+N = 7_000_000 # population of Bulgaria
+beta = 0.3 # transmission rate
+sigma = 1/5.2  # incubation rate
+gamma = 1/10.0 # recovery rate
+t_max = 160 # days
+num_runs = 50 # number of simulations
+                        </code></pre>
+                    </section>
+                    <section>
+                         <img src="public/seir.png" alt="diagram" style="width: 50rem; height: auto;" />
+                    </section>
+                    <section>
+                        <div style="width: 100%;">
+                            <ul>
+                                <li>Има голяма вариация в развитието на епидемията</li>
+                                <li>Детерминистичният модел не улавя случайността</li>
+                                <li>Случайното изчезване на епидемията е възможно</li>
+                            </ul>
+                        </div>
+                    </section>
+                </section>
+
+                <section>
+                    <h3>въпроси</h3>
+                </section>
+
+                <section>
+                    <h3>благодаря за вниманието</h3>
                 </section>
             </div>
         </div>
